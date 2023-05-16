@@ -1,4 +1,4 @@
-# ee-windows
+# ee-azure
 
 Execution Environment with Azure collection
 <br>
