@@ -8,9 +8,9 @@ Execution Environment with Azure collection
 
 ## dependencies
 
-- [🐍 Python](./requirements.txt)
-- [🌌 Galaxy](./requirements.yml)
-- [💻 System](./bindep.txt)
+[🐍 Python](./requirements.txt)<br>
+[🌌 Galaxy](./requirements.yml)<br>
+[💻 System](./bindep.txt)
 
 ## additional build steps
 
