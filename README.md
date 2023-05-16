@@ -8,3 +8,4 @@ This repository contains Ansible execution environment (EE) configurations for v
 | ee-proxmox | Proxmox Virtual Environment workloads | [📝](./execution-environments/ee-proxmox/execution-environment.yml) | [🗂️](https://quay.io/repository/zleblanc/ee-proxmox?tab=info) |
 | ee-windows | Windows automation with Kerberos enabled | [📝](./execution-environments/ee-windows/README.md) | [🗂️](https://quay.io/repository/zleblanc/ee-windows?tab=info) |
 | ee-pwsh | Powershell on Linux | [📝](./execution-environments/ee-pwsh/README.md) | [🗂️](https://quay.io/repository/zleblanc/ee-pwsh?tab=info) |
+| ee-azure | Azure collection and dependencies | [📝](./execution-environments/ee-azure/README.md) | [🗂️](https://quay.io/repository/zleblanc/ee-azure?tab=info) |
