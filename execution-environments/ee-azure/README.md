@@ -1,8 +1,8 @@
 # ee-windows
 
-Execution Environment with Windows modules and kerberos enabled
+Execution Environment with Azure collection
 <br>
-[🗂️ Quay Repo](https://quay.io/repository/zleblanc/ee-windows?tab=info)
+[🗂️ Quay Repo](https://quay.io/repository/zleblanc/ee-azure?tab=info)
 <br>
 [🐳 Dockerfile](./.files/Dockerfile)
 

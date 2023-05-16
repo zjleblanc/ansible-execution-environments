@@ -5,3 +5,5 @@ collections:
   - ansible.windows
   - community.windows
   - chocolatey.chocolatey
+  - name: azure.azcollection
+    version: "1.15.0"
