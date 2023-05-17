@@ -40,7 +40,7 @@ jobs:
         value: ${{ fromJSON(needs.setup.outputs.ee-matrix) }}
     uses:  ./.github/workflows/deploy.yml
     with:
-      EE_FOLDER_NAME: ${{ needs.setup.outputs.ee-matrix }}
+      EE_FOLDER_NAME: ${{ matrix.value }}
       EE_IMAGE_TAG: 'latest'
       QUAY_USERNAME: 'zleblanc'
       REDHAT_USERNAME: zleblanc@redhat.com
