@@ -10,7 +10,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      ee-matrix: ${{ fromJSON(steps.ee-changes.outputs.changed-ees) }}
+      ee-matrix: ${{ steps.ee-changes.outputs.changed-ees }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -37,7 +37,7 @@ jobs:
     needs: [ setup ]
     strategy:
       matrix:
-        value: ${{ needs.setup.outputs.ee-matrix }}
+        value: ${{ fromJSON(needs.setup.outputs.ee-matrix) }}
     uses:  ./.github/workflows/deploy.yml
     with:
       EE_FOLDER_NAME: ${{ needs.setup.outputs.ee-matrix }}
