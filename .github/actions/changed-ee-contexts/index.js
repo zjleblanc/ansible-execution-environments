@@ -5,7 +5,7 @@ try {
 
   console.log(changed_files);
   if (changed_files === undefined || changed_files === '') {
-    core.setOutput("changed-ees", []);
+    core.setOutput("changed-ees", ['no-op']);
     core.setOutput("build-required", false);
     return;
   } 
