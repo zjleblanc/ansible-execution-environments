@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 
 try {
-  const changed_files = core.getInput('changed-files');
+  const changed_files = core.getInput('changed-files').split(" ");
   console.log(changed_files);
 
   const changed_ees = changed_files.map(f => f.split("/")[1]);
