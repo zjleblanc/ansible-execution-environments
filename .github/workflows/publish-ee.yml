@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ee-matrix: ${{ steps.ee-changes.outputs.changed-ees }}
+      ee-build-required: ${{ steps.ee-changes.outputs.build-required }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -32,6 +33,7 @@ jobs:
 
   publish-ee-changes:
     needs: [ setup ]
+    if: needs.setup.outputs.ee-build-required
     strategy:
       matrix:
         value: ${{ fromJSON(needs.setup.outputs.ee-matrix) }}

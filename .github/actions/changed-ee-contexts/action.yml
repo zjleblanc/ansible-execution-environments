@@ -7,6 +7,8 @@ inputs:
 outputs:
   changed-ees:
     description: 'changed execution environments'
+  build-required:
+    description: 'flag to run build job if required'
 runs:
   using: 'node16'
   main: 'index.js'
