@@ -1,9 +1,6 @@
 name: publish-execution-environments
 run-name: ${{ github.actor }} publishing execution environments
 on:
-  push:
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:
