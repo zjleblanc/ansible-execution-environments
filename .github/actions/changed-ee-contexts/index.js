@@ -6,7 +6,7 @@ try {
   console.log(changed_files);
   if (changed_files === undefined || changed_files === '') {
     core.setOutput("changed-ees", ['no-op']);
-    core.setOutput("build-required", false);
+    core.setOutput("changed-ees-count", 0);
     return;
   } 
 
@@ -17,7 +17,7 @@ try {
   const deduped_ees = [...new Set(changed_ees)];
   console.log(deduped_ees);
   core.setOutput("changed-ees", deduped_ees);
-  core.setOutput("build-required", deduped_ees.length > 0);
+  core.setOutput("changed-ees-count", deduped_ees.length);
 
 } catch (error) {
   core.setFailed(error.message);
