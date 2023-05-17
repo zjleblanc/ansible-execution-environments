@@ -10,7 +10,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      ee-matrix: ${{ steps.ee-changes.outputs.matrix }}
+      ee-matrix: ${{ steps.ee-changes.outputs.changed-ees }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
