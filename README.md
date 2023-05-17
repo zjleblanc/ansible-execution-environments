@@ -1,5 +1,7 @@
 # ansible-execution-environments
 
+![publish workflow](https://github.com/zjleblanc/ansible-execution-environments/actions/workflows/publish-ee.yml/badge.svg)
+
 This repository contains Ansible execution environment (EE) configurations for various purposes. Many of these examples may be too broad or too specific for general consumption, but they are intended to be a starting point for creating your own bespoke EEs.
 
 | EE Name | Purpose | Docs | Quay Repo |
