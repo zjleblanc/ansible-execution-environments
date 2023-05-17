@@ -4,23 +4,31 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
+
 jobs:
-  publish-ee-changes:
+  setup:
     runs-on: ubuntu-latest
+    outputs:
+      ee-matrix: ${{ steps.ee-changes.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
         with:
             fetch-depth: 2
 
-      - uses: tj-actions/changed-files@v35
-        id: ee-changes
+      - name: Identify changed files
+        uses: tj-actions/changed-files@v35
+        id: file-changes
         with:
           since_last_remote_commit: true
           files: 'execution-environments/**/*'
-          files_ignore: '**/README.md'
+          files_ignore: |
+            **/README.md
+            **/.files/*
 
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.ee-changes.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
+      - name: Determine EEs to build
+        id: ee-changes
+        uses: ./.github/actions/changed-ee-contexts
+        with: 
+          changed-files: ${{ steps.file-changes.outputs.all_changed_files }}

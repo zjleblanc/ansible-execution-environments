@@ -1,0 +1,110 @@
+# Adapted from cloin/ee-builds/.github/workflows/deploy.yml
+name: EE build (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      EE_FOLDER_NAME:
+        description: 'name of the folder where the EE is located (will become the name of the EE)'
+        default: ''
+        required: true
+        type: string
+      EE_IMAGE_TAG:
+        description: 'just one tag for image build'
+        default: 'latest'
+        required: true
+        type: string
+      QUAY_USERNAME:
+        description: 'this is used during the image push to quay'
+        required: true
+        type: string
+      REDHAT_USERNAME:
+        description: 'needed for registry login'
+        required: false
+        type: string
+    secrets:
+      QUAY_PASSWORD:
+        description: 'needed for quay.io login'
+        required: false
+      REDHAT_PASSWORD:
+        description: 'needed for redhat.registry.io login'
+        required: false
+      AH_TOKEN:
+        description: 'API token for hosted automation hub'
+        required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        
+      - name: Install python requirements (ansible-builder)
+        run: pip install -r requirements.workflow.txt
+
+      - name: Log in to quay.io
+        id: registry-quay
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: quay.io
+          username: ${{ inputs.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }}
+
+      - name: Log in to registry.redhat.io
+        id: registry-redhat
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: registry.redhat.io
+          username: ${{ inputs.REDHAT_USERNAME }}
+          password: ${{ secrets.REDHAT_PASSWORD }}
+          
+      - name: substitute token for automation hub
+        id: ah-token
+        run: |
+          sed -i "s/my_ah_token/$AH_TOKEN/1" ansible.cfg
+        env:
+          AH_TOKEN: ${{ secrets.AH_TOKEN }}
+
+      - name: Build image
+        id: build-image
+        working-directory: execution-environments/${{ inputs.EE_FOLDER_NAME }}
+        run: |
+          ansible-builder build \
+          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
+          --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
+           
+      - name: Push To quay.io
+        id: push-to-quay
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ inputs.EE_FOLDER_NAME }}
+          tags: |
+            ${{ inputs.EE_IMAGE_TAG }}
+            ${{ github.sha }}
+          registry: quay.io/${{ inputs.QUAY_USERNAME }}/
+          username: ${{ inputs.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_PASSWORD }} 
+        
+      - name: Print summary
+        working-directory: execution-environments/${{ inputs.EE_FOLDER_NAME }}
+        run: |
+          echo "## :rocket: Usage" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Image pushed to repository: [${{ steps.push-to-quay.outputs.registry-path }}](https://${{ steps.push-to-quay.outputs.registry-path }})" >> $GITHUB_STEP_SUMMARY
+          echo "> \`podman pull ${{ steps.push-to-quay.outputs.registry-path }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "> \`podman pull quay.io/${{ inputs.QUAY_USERNAME }}/${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "## :pushpin: Ansible info:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "`podman run ${{ inputs.EE_FOLDER_NAME }} ansible --version`" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "## :pushpin: Installed collections:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "`podman run ${{ inputs.EE_FOLDER_NAME }} ansible-galaxy collection list`" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "## :pushpin: Containerfile:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "`cat Containerfile`" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
