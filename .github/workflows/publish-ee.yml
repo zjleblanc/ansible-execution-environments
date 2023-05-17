@@ -1,0 +1,23 @@
+name: publish-execution-environments
+run-name: ${{ github.actor }} publishing execution environments
+on:
+  push:
+    branches:
+      - master
+jobs:
+  publish-ee-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+            fetch-depth: 0
+      - uses: tj-actions/changed-files@v35
+        id: ee-changes
+        with:
+          files: 'execution-environments/**/*'
+
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.ee-changes.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
