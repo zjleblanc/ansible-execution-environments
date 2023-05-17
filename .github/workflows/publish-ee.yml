@@ -33,7 +33,7 @@ jobs:
 
   publish-ee-changes:
     needs: [ setup ]
-    if: needs.setup.outputs.ee-build-required
+    if: always() && needs.setup.outputs.ee-build-required
     strategy:
       matrix:
         value: ${{ fromJSON(needs.setup.outputs.ee-matrix) }}
