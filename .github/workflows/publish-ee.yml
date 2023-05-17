@@ -32,3 +32,19 @@ jobs:
         uses: ./.github/actions/changed-ee-contexts
         with: 
           changed-files: ${{ steps.file-changes.outputs.all_changed_files }}
+
+  publish-ee-changes:
+    needs: [ setup ]
+    strategy:
+      matrix:
+        value: ${{ needs.setup.outputs.ee-matrix }}
+    uses:  ./.github/workflows/deploy.yml
+    with:
+      EE_FOLDER_NAME: ${{ needs.setup.outputs.ee-matrix }}
+      EE_IMAGE_TAG: 'latest'
+      QUAY_USERNAME: 'zleblanc'
+      REDHAT_USERNAME: zleblanc@redhat.com
+    secrets:
+      QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+      REDHAT_PASSWORD: ${{ secrets.REDHAT_PASSWORD }}
+      AH_TOKEN: ${{ secrets.AH_TOKEN }}

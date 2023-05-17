@@ -1,5 +1,5 @@
 # Adapted from cloin/ee-builds/.github/workflows/deploy.yml
-name: EE build (reusable)
+name: EE publish (reusable)
 
 on:
   workflow_call:
@@ -34,7 +34,7 @@ on:
         required: false
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
