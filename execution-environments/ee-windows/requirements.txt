@@ -6,3 +6,4 @@ pypsrp[kerberos,credssp]
 pywinrm[kerberos,credssp]
 pexpect>=4.5
 pyyaml
+proxmoxer
