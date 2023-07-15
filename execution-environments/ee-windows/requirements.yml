@@ -2,9 +2,11 @@
 # 05-09-23 12:21
 ---
 collections:
-  - ansible.controller
+  - name: ansible.controller
+    version: 4.3.0
   - ansible.windows
   - community.windows
   - community.general
   - chocolatey.chocolatey
-  - servicenow.itsm
+  - name: servicenow.itsm
+    version: 2.1.0
