@@ -30,7 +30,10 @@ on:
         description: 'needed for redhat.registry.io login'
         required: false
       AH_TOKEN:
-        description: 'API token for hosted automation hub'
+        description: 'API token for Red Hat automation hub'
+        required: false
+      PAH_TOKEN:
+        description: 'API token for private automation hub'
         required: false
 
 jobs:
