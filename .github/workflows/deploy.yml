@@ -62,9 +62,11 @@ jobs:
       - name: substitute token for automation hub
         id: ah-token
         run: |
-          sed -i "s/my_ah_token/$AH_TOKEN/1" ansible.cfg
+          sed -i "s/rh_ah_token/$AH_TOKEN/1" ansible.cfg
+          sed -i "s/pah_token/$PAH_TOKEN/1" ansible.cfg
         env:
           AH_TOKEN: ${{ secrets.AH_TOKEN }}
+          PAH_TOKEN: ${{ secrets.PAH_TOKEN }}
 
       - name: Build image
         id: build-image
