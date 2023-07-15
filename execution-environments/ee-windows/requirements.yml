@@ -7,7 +7,8 @@ collections:
   - name: ansible.windows
     version: 1.9.0
   - community.windows
-  - community.general
+  - name: community.general
+    version: 6.6.0
   - chocolatey.chocolatey
   - name: servicenow.itsm
     version: 2.1.0
