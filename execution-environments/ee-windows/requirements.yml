@@ -6,7 +6,8 @@ collections:
     version: 4.3.0
   - name: ansible.windows
     version: 1.9.0
-  - community.windows
+  - name: community.windows
+    version: 1.9.0
   - name: community.general
     version: 6.6.0
   - chocolatey.chocolatey
