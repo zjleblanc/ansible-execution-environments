@@ -47,3 +47,4 @@ jobs:
       QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
       REDHAT_PASSWORD: ${{ secrets.REDHAT_PASSWORD }}
       AH_TOKEN: ${{ secrets.AH_TOKEN }}
+      PAH_TOKEN: ${{ secrets.PAH_TOKEN }}
