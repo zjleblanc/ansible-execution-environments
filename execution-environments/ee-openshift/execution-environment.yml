@@ -33,5 +33,4 @@ additional_build_steps:
       && tar xvf openshift-client-linux.tar.gz oc kubectl
       && cp oc kubectl /usr/local/bin
       && cd ..
-    - >-
-      RUN echo $PATH
+    - RUN oc version && ocp-tools/openshift-install version
