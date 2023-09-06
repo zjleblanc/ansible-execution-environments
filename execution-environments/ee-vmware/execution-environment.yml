@@ -1,26 +1,9 @@
 ---
-version: 3
-
-options:
-  package_manager_path: /usr/bin/microdnf
+version: 2
 
 dependencies:
-  galaxy:
-    collections:
-      - ansible.controller
-      - ansible.windows
-      - community.windows
-      - community.vmware
-      - vmware.vmware_rest
-
-images:
-  base_image:
-    name: registry.redhat.io/ansible-automation-platform-24/ee-supported-rhel8:latest
-
-additional_build_files:
-  - src: files
-    dest: configs
+  galaxy: requirements.yml
 
 additional_build_steps:
-  prepend_galaxy:
+  prepend: 
     - COPY _build/configs/ansible.cfg /etc/ansible/ansible.cfg
