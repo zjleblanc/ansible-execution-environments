@@ -1,0 +1,7 @@
+---
+collections:
+  - ansible.controller
+  - ansible.windows
+  - community.windows
+  - community.vmware
+  - vmware.vmware_rest
