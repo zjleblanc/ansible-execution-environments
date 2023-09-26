@@ -75,8 +75,11 @@ jobs:
         id: update-context
         working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
-          mkdir context
-          [[ -e .files/krb5.conf ]] && cp .files/krb5.conf context/krb5.conf
+          mkdir -p ./context
+          if [ -e .files/krb5.conf ]
+          then
+            cp .files/krb5.conf context/krb5.conf
+          fi
 
       - name: Build image
         id: build-image
