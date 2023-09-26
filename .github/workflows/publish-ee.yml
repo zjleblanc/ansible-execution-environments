@@ -20,7 +20,7 @@ jobs:
         id: file-changes
         with:
           since_last_remote_commit: true
-          files: 'execution-environments/**/*'
+          files: '**/*'
           files_ignore: |
             **/README.md
             **/.files/*
