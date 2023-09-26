@@ -8,7 +8,8 @@ dependencies:
   galaxy:
     collections:
       - ansible.controller
-      - ansible.windows
+      - name: ansible.windows
+        version: "1.14.0"
       - community.windows
       - community.vmware
       - vmware.vmware_rest
