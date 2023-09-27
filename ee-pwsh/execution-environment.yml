@@ -16,4 +16,4 @@ additional_build_steps:
   prepend_final: 
     - COPY _build/configs/microsoft.repo /etc/yum.repos.d/microsoft.repo
   append_final:
-    - RUN dnf install --assumeyes powershell
+    - RUN microdnf install --assumeyes powershell
