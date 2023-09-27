@@ -1,5 +1,6 @@
 # Root ignore
 /requirements.txt
+.DS_Store
 
 # EE Contexts
 **/context/

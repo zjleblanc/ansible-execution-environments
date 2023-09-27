@@ -1,0 +1,43 @@
+---
+version: 3
+
+options:
+  package_manager_path: /usr/bin/microdnf
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform-24/ee-supported-rhel8:latest
+
+dependencies:
+  galaxy:
+    collections:
+      - name: community.general
+        version: "6.5.0"
+      - name: community.network
+        version: "5.0.0"
+      - name: awx.awx
+        version: "22.7.0"
+      - name: ansible.controller
+        version: "4.4.2"
+      - name: ansible.netcommon
+        version: "5.2.0"
+      - name: cisco.ios
+        version: "5.0.0"
+      - name: cisco.iosxr
+        version: "6.0.1"
+      - name: cisco.nxos
+        version: "5.2.0"
+      - name: cisco.dnac
+        version: "6.7.4"
+      - name: arista.eos
+        version: "6.1.2"
+      - name: f5networks.f5_modules
+        version: "1.25.1"
+      - name: f5networks.f5os
+        version: "1.2.0"
+      - name: f5networks.f5_bigip
+        version: "3.1.0"
+      - name: junipernetworks.junos
+        version: "5.3.0"
+      - name: paloaltonetworks.panos
+        version: "2.17.6"
