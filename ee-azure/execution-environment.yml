@@ -36,8 +36,8 @@ additional_build_files:
     dest: configs
 
 additional_build_steps:
-  prepend: 
+  prepend_final: 
     - COPY krb5.conf /etc/krb5.conf
-  append:
+  append_final:
     - RUN microdnf install -y crypto-policies-scripts
     - RUN update-crypto-policies --set DEFAULT:AD-SUPPORT
