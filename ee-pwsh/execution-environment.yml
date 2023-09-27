@@ -1,0 +1,19 @@
+---
+version: 3
+
+options:
+  package_manager_path: /usr/bin/microdnf
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform-24/ee-minimal-rhel8:latest
+
+additional_build_files:
+  - src: files
+    dest: configs
+
+additional_build_steps:
+  prepend_final: 
+    - COPY _build/configs/microsoft.repo /etc/yum.repos.d/microsoft.repo
+  append_final:
+    - RUN microdnf install --assumeyes powershell

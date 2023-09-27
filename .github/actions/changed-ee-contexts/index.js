@@ -12,7 +12,7 @@ try {
 
   const changed_ees = changed_files
     .split(" ")
-    .map(f => f.split("/")[1]);
+    .map(f => f.split("/")[0]);
 
   const deduped_ees = [...new Set(changed_ees)];
   console.log(deduped_ees);

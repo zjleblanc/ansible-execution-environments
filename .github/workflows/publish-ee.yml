@@ -20,10 +20,13 @@ jobs:
         id: file-changes
         with:
           since_last_remote_commit: true
-          files: 'execution-environments/**/*'
+          files: '**/*'
           files_ignore: |
-            **/README.md
+            **/*.md
+            **/*.cfg
             **/.files/*
+            .github/*
+            requirements.workflow.txt
 
       - name: Determine EEs to build
         id: ee-changes

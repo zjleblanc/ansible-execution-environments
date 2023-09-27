@@ -71,16 +71,9 @@ jobs:
           AH_TOKEN: ${{ secrets.AH_TOKEN }}
           PAH_TOKEN: ${{ secrets.PAH_TOKEN }}
 
-      - name: Add to context if applicable
-        id: update-context
-        working-directory: execution-environments/${{ inputs.EE_FOLDER_NAME }}
-        run: |
-          mkdir context
-          [[ -e .files/krb5.conf ]] && cp .files/krb5.conf context/krb5.conf
-
       - name: Build image
         id: build-image
-        working-directory: execution-environments/${{ inputs.EE_FOLDER_NAME }}
+        working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
           ansible-builder build \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
@@ -99,7 +92,7 @@ jobs:
           password: ${{ secrets.QUAY_PASSWORD }} 
         
       - name: Print summary
-        working-directory: execution-environments/${{ inputs.EE_FOLDER_NAME }}
+        working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
           echo "## :rocket: Usage" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
