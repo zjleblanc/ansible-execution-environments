@@ -1,11 +1,24 @@
 ---
-version: 2
+version: 3
+
+options:
+  package_manager_path: /usr/bin/microdnf
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform-24/ee-minimal-rhel8:latest
 
 dependencies:
-  galaxy: requirements.yml
-  python: requirements.txt
-  system: bindep.txt
+  galaxy:
+    collections:
+      - name: zjleblanc.kasa
+        version: 1.1.0
+  python:
+    - python-kasa>=0.5.0
+    - asyncio>=3.4.3
+  system:
+    - git-core [platform:rpm]
 
 additional_build_steps:
-  prepend: |
+  prepend_final: |
     RUN pip3 install --upgrade pip setuptools
