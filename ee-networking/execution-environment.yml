@@ -20,7 +20,7 @@ dependencies:
       - name: ansible.controller
         version: "4.4.2"
       - name: ansible.netcommon
-        version: "5.2.0"
+        version: "4.1.0"
       - name: arista.eos
         version: "6.1.2"
       - name: cisco.ios
