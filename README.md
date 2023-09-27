@@ -8,6 +8,7 @@ This repository contains Ansible execution environment (EE) configurations for v
 | --- | --- | :---: | :---: |
 | ee-autodotes-kasa | TP-Link Kasa home automation workloads | [📝](./ee-autodotes-kasa/execution-environment.yml) | [🗂️](https://quay.io/repository/zleblanc/ee-kasa?tab=info) |
 | ee-azure | Azure automation | [📝](./ee-azure/execution-environment.yml) | [🗂️](https://quay.io/repository/zleblanc/ee-azure?tab=info) |
+| ee-networking | Comprehensive networking environment with various vendor collections | [📝](./ee-networking/execution-environment.yml) | [🗂️](https://quay.io/repository/zleblanc/ee-networking?tab=info) |
 | ee-openshift | OpenShift CLI | [📝](./ee-openshift/execution-environment.yml) | [🗂️](https://quay.io/repository/zleblanc/ee-openshift?tab=info) |
 | ee-proxmox | Proxmox Virtual Environment workloads | [📝](./ee-proxmox/execution-environment.yml) | [🗂️](https://quay.io/repository/zleblanc/ee-proxmox?tab=info) |
 | ee-pwsh | Powershell for Linux | [📝](./ee-pwsh/execution-environment.yml) | [🗂️](https://quay.io/repository/zleblanc/ee-pwsh?tab=info) |
