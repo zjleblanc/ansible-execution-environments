@@ -1,0 +1,6 @@
+[msft-prod]
+name=msft-prod
+baseurl=https://packages.microsoft.com/rhel/8/prod/
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc

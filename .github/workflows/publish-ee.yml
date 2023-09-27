@@ -28,7 +28,6 @@ jobs:
             .github/*
             requirements.workflow.txt
 
-
       - name: Determine EEs to build
         id: ee-changes
         uses: ./.github/actions/changed-ee-contexts
