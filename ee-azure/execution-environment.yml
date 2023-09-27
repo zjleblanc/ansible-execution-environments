@@ -3,18 +3,41 @@
 ---
 version: 3
 
+options:
+  package_manager_path: /usr/bin/microdnf
+
 images:
   base_image:
     name: registry.redhat.io/ansible-automation-platform-24/ee-minimal-rhel8:latest
 
 dependencies:
-  galaxy: requirements.yml
-  python: requirements.txt
-  system: bindep.txt
+  galaxy:
+    collections:
+      - ansible.windows
+      - community.windows
+      - chocolatey.chocolatey
+      - name: azure.azcollection
+        version: "1.15.0"
+  python:
+    - paramiko
+    - pyOpenSSL
+    - pypsrp[kerberos,credssp]
+    - pywinrm[kerberos,credssp]
+    - pexpect>=4.5
+    - pyyaml
+  system:
+    - krb5-libs [platform:rpm]
+    - krb5-workstation [platform:rpm]
+    - crypto-policies-scripts [platform:rpm]
+    - git-core [platform:rpm]
+
+additional_build_files:
+  - src: files
+    dest: configs
 
 additional_build_steps:
   prepend: 
     - COPY krb5.conf /etc/krb5.conf
   append:
-    - RUN dnf install -y crypto-policies-scripts
+    - RUN microdnf install -y crypto-policies-scripts
     - RUN update-crypto-policies --set DEFAULT:AD-SUPPORT
