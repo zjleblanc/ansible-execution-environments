@@ -33,8 +33,6 @@ dependencies:
         version: "6.7.4"
       - name: f5networks.f5_modules
         version: "1.25.1"
-      - name: f5networks.f5os
-        version: "1.2.0"
       - name: f5networks.f5_bigip
         version: "3.1.0"
       - name: junipernetworks.junos
