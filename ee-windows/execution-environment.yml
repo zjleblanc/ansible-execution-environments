@@ -29,7 +29,7 @@ dependencies:
   system:
     - krb5-libs [platform:rpm]
     - krb5-workstation [platform:rpm]
-    - crypto-policies-scripts [platform: rpm]
+    - crypto-policies-scripts [platform:rpm]
     - git-core [platform:rpm]
 
 additional_build_files:
