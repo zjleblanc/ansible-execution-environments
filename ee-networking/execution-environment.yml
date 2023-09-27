@@ -21,6 +21,8 @@ dependencies:
         version: "4.4.2"
       - name: ansible.netcommon
         version: "5.2.0"
+      - name: arista.eos
+        version: "6.1.2"
       - name: cisco.ios
         version: "5.0.0"
       - name: cisco.iosxr
@@ -29,8 +31,6 @@ dependencies:
         version: "5.2.0"
       - name: cisco.dnac
         version: "6.7.4"
-      - name: arista.eos
-        version: "6.1.2"
       - name: f5networks.f5_modules
         version: "1.25.1"
       - name: f5networks.f5os
