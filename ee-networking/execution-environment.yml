@@ -9,6 +9,8 @@ images:
     name: registry.redhat.io/ansible-automation-platform-24/ee-supported-rhel8:latest
 
 dependencies:
+  system:
+    - git
   galaxy:
     collections:
       - name: community.general
