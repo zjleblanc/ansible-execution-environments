@@ -10,4 +10,4 @@ images:
 
 additional_build_steps:
   append_final:
-    - RUN ln -s /usr/share/ansible/collections /usr/share/automation-controller/collections
+    - RUN ln -s /usr/share/ansible/collections/ansible_collections/redhat /usr/share/automation-controller/collections/ansible_collections/redhat
