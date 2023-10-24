@@ -1,0 +1,40 @@
+---
+version: 3
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform-22/ee-29-rhel8:latest
+
+options:
+  package_manager_path: /usr/bin/microdnf
+
+additional_build_files:
+  - src: files # copy contents from files to configs dir in build context
+    dest: configs
+
+additional_build_steps:
+  prepend_galaxy:
+    # reference the file from build context like this
+    - COPY _build/configs/ansible.cfg /etc/ansible/ansible.cfg
+
+dependencies:
+  galaxy:
+    collections:
+      - name: awx.awx
+        version: 11.0.0
+      - name: ansible.utils
+        version: 2.0.2
+      - name: community.crypto
+        version: 1.6.1
+  python:
+    - packaging
+    - xmltodict
+    # awx.awx collection requirements
+    - pytz  # for schedule_rrule lookup plugin
+    - python-dateutil>=2.7.0  # schedule_rrule
+    - awxkit  # For import and export modules
+    - ansible-tower-cli==3.3.9
+    - awscli==1.19.69
+    - hvac==0.10.11
+    - ansible-modules-hashivault==4.5.6
+    - pexpect==4.8.0

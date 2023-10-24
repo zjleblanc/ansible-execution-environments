@@ -1,0 +1,6 @@
+---    
+collections:
+  - name: ansible.eda
+  - name: community.general
+  - name: cloin.eda 
+  - name: servicenow.itsm

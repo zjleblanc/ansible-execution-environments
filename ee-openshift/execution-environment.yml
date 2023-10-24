@@ -22,14 +22,14 @@ additional_build_files:
 additional_build_steps:
   prepend_galaxy:
     - COPY _build/configs/ansible.cfg /etc/ansible/ansible.cfg
-  prepend_final: 
-    - >-
-      RUN mkdir ocp-tools
-      && curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.6/openshift-client-linux.tar.gz --output ocp-tools/openshift-client-linux.tar.gz 
-      && curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.6/openshift-install-linux.tar.gz --output ocp-tools/openshift-install-linux.tar.gz
-      && cd ocp-tools
-      && chmod 777 *
-      && tar xvf openshift-install-linux.tar.gz openshift-install
-      && tar xvf openshift-client-linux.tar.gz oc kubectl
-      && cp oc kubectl openshift-install /usr/local/bin
-    - RUN oc version && openshift-install version
+  # prepend_final: 
+  #   - >-
+  #     RUN mkdir ocp-tools
+  #     && curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.6/openshift-client-linux.tar.gz --output ocp-tools/openshift-client-linux.tar.gz 
+  #     && curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.6/openshift-install-linux.tar.gz --output ocp-tools/openshift-install-linux.tar.gz
+  #     && cd ocp-tools
+  #     && chmod 777 *
+  #     && tar xvf openshift-install-linux.tar.gz openshift-install
+  #     && tar xvf openshift-client-linux.tar.gz oc kubectl
+  #     && cp oc kubectl openshift-install /usr/local/bin
+  #   - RUN oc version && openshift-install version
