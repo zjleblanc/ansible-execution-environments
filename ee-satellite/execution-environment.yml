@@ -8,10 +8,6 @@ images:
   base_image:
     name: registry.redhat.io/ansible-automation-platform-24/ee-supported-rhel8:latest
 
-additional_build_files:
-    - src: files/ansible.cfg
-      dest: configs
-
 additional_build_steps:
   append_final:
-    - COPY _build/configs/ansible.cfg /etc/ansible/ansible.cfg
+    - RUN ln -s /usr/share/ansible/collections /usr/share/automation-controller/collections
