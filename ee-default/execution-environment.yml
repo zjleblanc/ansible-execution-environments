@@ -17,7 +17,3 @@ dependencies:
         version: "6.5.0"
       - name: awx.awx
         version: "22.7.0"
-      - name: ansible.controller
-        version: "4.4.2"
-      - name: ansible.scm
-        version: "1.2.1"
