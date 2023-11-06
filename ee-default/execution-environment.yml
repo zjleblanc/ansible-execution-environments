@@ -1,0 +1,23 @@
+---
+version: 3
+
+options:
+  package_manager_path: /usr/bin/microdnf
+
+images:
+  base_image:
+    name: registry.redhat.io/ansible-automation-platform-24/ee-supported-rhel8:latest
+
+dependencies:
+  system:
+    - git
+  galaxy:
+    collections:
+      - name: community.general
+        version: "6.5.0"
+      - name: awx.awx
+        version: "22.7.0"
+      - name: ansible.controller
+        version: "4.4.2"
+      - name: ansible.scm
+        version: "1.2.1"
