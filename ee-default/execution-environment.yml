@@ -11,7 +11,7 @@ images:
 dependencies:
   system:
     - git
-    - passlib
+    - python-passlib
     - python-lxml
     - python-xmltodict
     - python-jmespath
