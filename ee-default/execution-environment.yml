@@ -11,10 +11,10 @@ images:
 dependencies:
   system:
     - git
-    - python-passlib
-    - python-lxml
-    - python-xmltodict
-    - python-jmespath
+    - python3-passlib
+    - python3-lxml
+    - python3-xmltodict
+    - python3-jmespath
   python:
     - requests
   galaxy:
