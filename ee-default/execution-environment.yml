@@ -11,6 +11,12 @@ images:
 dependencies:
   system:
     - git
+    - passlib
+    - python-lxml
+    - python-xmltodict
+    - python-jmespath
+  python:
+    - requests
   galaxy:
     collections:
       - name: community.general
