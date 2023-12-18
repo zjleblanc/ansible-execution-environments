@@ -46,6 +46,9 @@ jobs:
       - name: Install python requirements (ansible-builder)
         run: pip install -r requirements.workflow.txt
 
+      - name: Prep config directory
+        run: mkdir -p /home/runner/.docker
+
       - name: Log in to quay.io
         id: registry-quay
         uses: redhat-actions/podman-login@v1
