@@ -23,6 +23,8 @@ dependencies:
         version: "6.5.0"
       - name: awx.awx
         version: "22.7.0"
+      - name: ansible.controller
+        version: "4.5.0"
       - name: theforeman.foreman
         version: "3.14.0"
       - name: azure.azcollection
