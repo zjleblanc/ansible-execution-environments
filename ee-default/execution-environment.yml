@@ -25,3 +25,17 @@ dependencies:
         version: "22.7.0"
       - name: theforeman.foreman
         version: "3.14.0"
+      - name: azure.azcollection
+        version: "1.15.0"
+      - name: ansible.windows
+        version: "1.9.0"
+      - name: ansible.utils
+        version: "2.9.0"
+      - name: community.windows
+        version: "1.9.0"
+      - name: community.general
+        version: "6.6.0"
+      - name: chocolatey.chocolatey
+        version: "1.4.0"
+      - name: servicenow.itsm
+        version: "2.1.0"
