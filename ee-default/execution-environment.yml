@@ -17,6 +17,7 @@ dependencies:
     - lxml
     - xmltodict
     - jmespath
+    - packaging
   galaxy:
     collections:
       - name: community.general
