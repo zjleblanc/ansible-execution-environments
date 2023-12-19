@@ -46,4 +46,4 @@ dependencies:
 
 additional_build_steps:
   prepend_final: |
-    - RUN curl -L https://aka.ms/InstallAzureCli | bash
+    RUN curl -L https://aka.ms/InstallAzureCli | bash
