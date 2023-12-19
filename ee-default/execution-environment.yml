@@ -21,8 +21,6 @@ dependencies:
     - packaging
   galaxy:
     collections:
-      - name: community.general
-        version: "6.6.0"
       - name: awx.awx
         version: "22.7.0"
       - name: ansible.controller
