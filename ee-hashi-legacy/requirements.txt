@@ -1,0 +1,10 @@
+packaging
+
+xmltodict
+python-dateutil>=2.7.0
+awxkit
+ansible-tower-cli==3.3.9
+awscli==1.19.69
+hvac==0.10.11
+ansible-modules-hashivault==5.1.1
+pexpect==4.8.0
