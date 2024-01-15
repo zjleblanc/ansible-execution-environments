@@ -19,6 +19,8 @@ dependencies:
     - xmltodict
     - jmespath
     - packaging
+    - botocore
+    - boto3
   galaxy:
     collections:
       - name: awx.awx
