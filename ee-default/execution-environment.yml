@@ -43,5 +43,13 @@ dependencies:
         version: "8.1.0"
       - name: chocolatey.chocolatey
         version: "1.4.0"
+      - name: infra.ah_configuration
+        version: "2.0.4"
+      - name: infra.controller_configuration
+        version: "2.6.0"
+      - name: infra.ee_utilities
+        version: "3.1.3"
+      - name: infra.osbuild
+        version: "2.3.0"
       - name: servicenow.itsm
         version: "2.1.0"
