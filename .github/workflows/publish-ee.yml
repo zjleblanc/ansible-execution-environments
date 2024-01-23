@@ -26,7 +26,9 @@ jobs:
             **/*.cfg
             **/.files/*
             .github/*
+            ansible/
             requirements.workflow.txt
+            bitbucket-pipelines.yml
 
       - name: Determine EEs to build
         id: ee-changes
