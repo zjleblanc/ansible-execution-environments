@@ -20,8 +20,9 @@
         key_file: /home/zach/.ssh/id_rsa
 
     - name: Load EE defintion from file
-      ansible.builtin.set_fact:
-        ee_definition: "{{ lookup('file', r_tmp_dir.path + '/ansible-execution-environments/' + ee_name + '/execution-environment.yml') | from_yaml }}"
+      register: r_ee_def_yml
+      ansible.builtin.slurp:
+        src: "{{ r_tmp_dir.path + '/ansible-execution-environments/' + ee_name + '/execution-environment.yml' }}"
 
     # - name: Build and publish the EE
     #   ansible.builtin.include_role:
