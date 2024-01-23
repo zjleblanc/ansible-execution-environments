@@ -24,6 +24,10 @@
       ansible.builtin.slurp:
         src: "{{ r_tmp_dir.path + '/' + ee_name + '/execution-environment.yml' }}"
 
+    - name: Create var from ee definition
+      ansible.builtin.set_fact:
+        ee_definition: "{{ r_ee_def_yml.content | b64decode | from_yaml }}"
+
     # - name: Build and publish the EE
     #   ansible.builtin.include_role:
     #     name: infra.ee_utilities.ee_builder
