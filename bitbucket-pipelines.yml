@@ -1,9 +1,9 @@
-image: quay.io/centos/centos:stream9
+image: quay.io/zleblanc/bitbucket-builder:v1
 
 pipelines:
   default:
     - step:
-        name: 'Install ansible-builder'
+        name: 'Build execution environment'
         deployment: master
         script:
-          - python3 -m pip install ansible-builder
+          - ansible-builder --help
