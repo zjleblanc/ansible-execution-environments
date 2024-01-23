@@ -15,7 +15,7 @@
       ansible.builtin.git:
         repo: git@bitbucket.org:zach-leblanc/ansible-execution-environments.git
         dest: "{{ r_tmp_dir.path }}"
-        version: "{{ commit_hash }}"
+        version: "{{ commit_hash | ternary(commit_hash, omit) }}"
         accept_hostkey: true
         key_file: /home/zach/.ssh/id_rsa
 
