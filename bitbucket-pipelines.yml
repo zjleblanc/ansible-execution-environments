@@ -21,8 +21,8 @@ pipelines:
             - step:
                 name: Login to registries
                 script:
-                  - podman login quay.io -u $QUAY_USERNAME -p $QUAY_PASSWORD
-                  - podman login registry.redhat.io -u $RH_USERNAME -p $RH_PASSWORD
+                  - podman login quay.io -u "$QUAY_USERNAME" -p "$QUAY_PASSWORD"
+                  - podman login registry.redhat.io -u "$RH_USERNAME" -p "$RH_PASSWORD"
             - step:
                 name: Replace Automation Hub token in ansible.cfg
                 script:
