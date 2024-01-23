@@ -12,7 +12,7 @@
         suffix: ee_checkout
 
     - name: test
-      ansible.builtin.command: ls /runner/project
+      ansible.builtin.command: "ls {{ playbook_dir }}"
 
     - name: Copy destination to remote
       ansible.builtin.copy:
