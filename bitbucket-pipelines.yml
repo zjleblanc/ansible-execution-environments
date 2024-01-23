@@ -1,4 +1,4 @@
-image: ubuntu:22.04
+image: atlassian/default-image:4
 
 pipelines:
   custom:
