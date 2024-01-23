@@ -21,7 +21,7 @@
 
     - name: Load EE defintion from file
       ansible.builtin.set_fact:
-        ee_definition: "{{ lookup('file', r_tmp_dir.path + '/' + ee_name + '/execution-environment.yml') | from_yaml }}"
+        ee_definition: "{{ lookup('file', r_tmp_dir.path + '/ansible-execution-environments/' + ee_name + '/execution-environment.yml') | from_yaml }}"
 
     # - name: Build and publish the EE
     #   ansible.builtin.include_role:
