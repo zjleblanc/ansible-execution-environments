@@ -8,7 +8,6 @@ pipelines:
         steps:
           - step:
               name: 'No-op pipeline'
-              deployment: test
               script:
                 - echo 'No-op'
   custom:
