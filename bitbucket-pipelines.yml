@@ -4,7 +4,7 @@ pipelines:
   default:
     - step:
         name: 'No-op pipeline'
-        deployment: master
+        deployment: test
         script:
           - echo 'No-op'
   custom:
