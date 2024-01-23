@@ -39,7 +39,7 @@
         ee_registry_password: "{{ ee_dest_reg_password }}"
         ee_ah_host: "{{ lookup('env', 'AH_HOST') | default(omit) }}"
         ee_ah_token: "{{ lookup('env', 'AH_TOKEN') | default(omit) }}"
-        ee_builder_dir_clean: false
+        ee_builder_dir_clean: true
         ee_builder_dir: "."
         ee_list:
           - name: "{{ ee_name }}"
