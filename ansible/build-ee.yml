@@ -43,7 +43,7 @@
         ee_builder_dir: "."
         ee_list:
           - name: "{{ ee_name }}"
-            tag: "{{ commit_hash }}"
+            tag: "{{ commit_hash | default(omit) }}"
             images: "{{ ee_definition.images | default(omit) }}"
             dependencies: "{{ ee_definition.dependencies | default(omit) }}"
             options: "{{ ee_definition.options | default(omit) }}"
