@@ -22,7 +22,7 @@
     - name: Load EE defintion from file
       register: r_ee_def_yml
       ansible.builtin.slurp:
-        src: "{{ r_tmp_dir.path + '/ansible-execution-environments/' + ee_name + '/execution-environment.yml' }}"
+        src: "{{ r_tmp_dir.path + '/' + ee_name + '/execution-environment.yml' }}"
 
     # - name: Build and publish the EE
     #   ansible.builtin.include_role:
