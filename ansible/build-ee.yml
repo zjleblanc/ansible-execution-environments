@@ -5,29 +5,38 @@
   become: false
 
   tasks:
-    - name: Create temporary build directory
-      register: r_tmp_dir
-      ansible.builtin.tempfile:
-        state: directory
-        suffix: ee_checkout
+    - name: Load EE definition from source control
+      block:
+        - name: Create temporary build directory
+          register: r_tmp_dir
+          ansible.builtin.tempfile:
+            state: directory
+            suffix: ee_checkout
 
-    - name: Checkout definitions
-      ansible.builtin.git:
-        repo: git@bitbucket.org:zach-leblanc/ansible-execution-environments.git
-        dest: "{{ r_tmp_dir.path }}"
-        version: "{{ commit_hash | ternary(commit_hash, omit) }}"
-        accept_hostkey: true
-        key_file: /home/zach/.ssh/id_rsa
+        - name: Checkout definitions
+          ansible.builtin.git:
+            repo: git@bitbucket.org:zach-leblanc/ansible-execution-environments.git
+            dest: "{{ r_tmp_dir.path }}"
+            version: "{{ commit_hash | ternary(commit_hash, omit) }}"
+            accept_hostkey: true
+            key_file: /home/zach/.ssh/id_rsa
 
-    - name: Load EE definition from file
-      register: r_ee_def_yml
-      ansible.builtin.slurp:
-        src: "{{ r_tmp_dir.path + '/' + ee_name + '/execution-environment.yml' }}"
+        - name: Load EE definition from file
+          register: r_ee_def_yml
+          ansible.builtin.slurp:
+            src: "{{ r_tmp_dir.path + '/' + ee_name + '/execution-environment.yml' }}"
 
-    - name: Create var from ee definition
-      ansible.builtin.set_fact:
-        ee_definition: "{{ r_ee_def_yml.content | b64decode | from_yaml }}"
+        - name: Create var from ee definition
+          ansible.builtin.set_fact:
+            ee_definition: "{{ r_ee_def_yml.content | b64decode | from_yaml }}"
+      always:
+        - name: Cleanup temporary build directory
+          when: r_tmp_dir.path is defined
+          ansible.builtin.file:
+            path: "{{ r_tmp_dir.path }}"
+            state: absent
 
+    # Begin building the EE
     - name: Build and publish the EE
       ansible.builtin.include_role:
         name: infra.ee_utilities.ee_builder
@@ -42,7 +51,7 @@
         ee_builder_dir_clean: true
         ee_list:
           - name: "{{ ee_name }}"
-            tag: "{{ commit_hash | default(omit) }}"
+            tag: "{{ commit_hash | ternary(commit_hash, omit) }}"
             images: "{{ ee_definition.images | default({}) }}"
             dependencies: "{{ ee_definition.dependencies | default({}) }}"
             options: "{{ ee_definition.options | default({}) }}"
@@ -50,8 +59,13 @@
             build_items: "{{ ee_definition.build_items | default([]) }}"
             build_files: "{{ ee_definition.build_files | default({}) }}"
 
-    - name: Cleanup temporary build directory
-      when: r_tmp_dir.path is defined
-      ansible.builtin.file:
-        path: "{{ r_tmp_dir.path }}"
-        state: absent
+    - name: "Tag as latest | {{ ee_name }}"
+      containers.podman.podman_image:
+        name: "{{ ee_name }}{{ commit_hash | ternary(':' + commit_hash, omit) }}"
+        pull: false
+        push: true
+        username: "{{ ee_dest_reg_user | default(omit, true) }}"
+        password: "{{ ee_dest_reg_password | default(omit, true) }}"
+        tag: "latest"
+        push_args:
+          dest: "{{ ee_dest_reg }}"
