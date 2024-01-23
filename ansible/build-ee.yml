@@ -44,10 +44,12 @@
         ee_list:
           - name: "{{ ee_name }}"
             tag: "{{ commit_hash | default(omit) }}"
-            images: "{{ ee_definition.images | default(omit) }}"
-            dependencies: "{{ ee_definition.dependencies | default(omit) }}"
-            options: "{{ ee_definition.options | default(omit) }}"
-            build_steps: "{{ ee_definition.build_steps | default(omit) }}"
+            images: "{{ ee_definition.images | default({}) }}"
+            dependencies: "{{ ee_definition.dependencies | default({}) }}"
+            options: "{{ ee_definition.options | default({}) }}"
+            build_steps: "{{ ee_definition.build_steps | default({}) }}"
+            build_items: "{{ ee_definition.build_items | default([]) }}"
+            build_files: "{{ ee_definition.build_files | default({}) }}"
 
     - name: Cleanup temporary build directory
       when: r_tmp_dir.path is defined
