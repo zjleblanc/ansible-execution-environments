@@ -11,13 +11,11 @@
         state: directory
         suffix: ee_checkout
 
-    - name: Checkout definitions
-      ansible.builtin.git:
-        repo: git@bitbucket.org:zach-leblanc/ansible-execution-environments.git
-        dest: "{{ r_tmp_dir.path }}"
-        version: "{{ commit_hash | ternary(commit_hash, omit) }}"
-        accept_hostkey: true
-        key_file: /home/zach/.ssh/id_rsa
+    - name: Copy destination to remote
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../{{ ee_name }}/"
+        dest: "{{ r_tmp_dir.path }}/"
+        mode: "0644"
 
     - name: Cleanup temporary build directory
       when: r_tmp_dir.path is defined
