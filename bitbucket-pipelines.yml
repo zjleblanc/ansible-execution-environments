@@ -10,19 +10,15 @@ pipelines:
           deployment: master
           steps:
             - step:
-                name: Login to registries
+                name: Build the execution environment
                 script:
                   - podman login quay.io -u "$QUAY_USERNAME" -p "$QUAY_PASSWORD"
                   - podman login registry.redhat.io -u "$RH_USERNAME" -p "$RH_PASSWORD"
-            - step:
-                name: Replace Automation Hub token in ansible.cfg
-                script:
                   - sed -i "s/rh_ah_token/$AH_TOKEN/1" ansible.cfg
-            - step:
-                name: Build the execution environment
-                script:
-                  - echo $BITBUCKET_CLONE_DIR
-                  - echo $BITBUCKET_WORKSPACE
-                  - echo $BITBUCKET_COMMIT
-                  - cd $BITBUCKET_CLONE_DIR
+                  - cd $BITBUCKET_CLONE_DIR\$EE_FOLDER
                   - ls -al
+                  - ansible-builder build \
+                    --tag=quay.io/zleblanc/$EE_FOLDER:latest \
+                    --tag=quay.io/zleblanc/$EE_FOLDER:$BITBUCKET_COMMIT
+                  - podman push quay.io/zleblanc/$EE_FOLDER:$BITBUCKET_COMMIT
+                  - podman push quay.io/zleblanc/$EE_FOLDER:latest
