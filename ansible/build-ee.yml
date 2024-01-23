@@ -11,14 +11,70 @@
         state: directory
         suffix: ee_checkout
 
-    - name: test
-      ansible.builtin.command: "ls {{ playbook_dir }}"
+    - name: Checkout definitions
+      ansible.builtin.git:
+        repo: git@bitbucket.org:zach-leblanc/ansible-execution-environments.git
+        dest: "{{ r_tmp_dir.path }}"
+        version: "{{ commit_hash | ternary(commit_hash, omit) }}"
+        accept_hostkey: true
+        key_file: /home/zach/.ssh/id_rsa
 
-    - name: Copy destination to remote
-      ansible.builtin.copy:
-        src: "/runner/project/{{ ee_name }}/"
-        dest: "{{ r_tmp_dir.path }}/"
-        mode: "0644"
+    - name: Load EE defintion from file
+      ansible.builtin.set_fact:
+        ee_definition: "{{ lookup('file', r_tmp_dir.path + '/' + ee_name + '/execution-environment.yml') | from_yaml }}"
+
+    # - name: Build and publish the EE
+    #   ansible.builtin.include_role:
+    #     name: infra.ee_utilities.ee_builder
+    #   vars:
+    #     ee_base_registry_username: "{{ ee_base_reg_user }}"
+    #     ee_base_registry_password: "{{ ee_base_reg_password }}"
+    #     ee_base_image: registry.redhat.io/ansible-automation-platform-24/ee-minimal-rhel9:latest
+    #     # As stated in ee_registry_dest's description, if you want to namespace an image you put the namespace in the ee_registry_dest variable like so instead of in the name variable
+    #     ee_registry_dest: ahnosso.node/custom-images-for-prod
+    #     ee_registry_username: "{{ ee_destreg_user }}"
+    #     ee_registry_password: "{{ ee_dest_reg_user }}"
+    #     # in this example we are assuming that we are pulling content and pushing the final artifact to the same location
+    #     ee_ah_host: "{{ lookup('env', 'AH_HOST') | default(omit) }}"
+    #     ee_ah_token: "{{ lookup('env', 'AH_TOKEN') | default(omit) }}"
+    #     # ee_builder_dir_clean is used because depending on the environment permissions errors can be thrown when attempting to clean up. It is also unnecessary if the entire environment is going to be destroyed at the end anyway.
+    #     #
+    #     ee_builder_dir_clean: false
+    #     #  ee_builder_dir is set to the relative path "." because it tells ansible-builder to always use the temporary folder created by the pipeline. This may not be necessary depending on the envirnment but the temporary directories created by the pipeline for building the final artifacts can vary in location
+    #     ee_builder_dir: "."
+    #     ee_list:
+    #         # To reiterate, only the name variable goes here, not the namespace, that is placed in ee_registry_dest, please refer to ee_registry_dest's description for more details
+    #       - name: "{{ ee_name }}"
+    #         tag: "{{ commit_hash }}"
+    #         # Using the latest tag is best practice and should be replaced with a tested version of the container. However latest can be a good starting point to figure out which container works, then replacing latest with the version number for the tested latest container.
+    #         images:
+    #           base_image:
+    #             name: registry.redhat.io/ansible-automation-platform-24/ee-minimal-rhel9:latest
+    #         dependencies:
+    #           ansible_core:
+    #             package_pip: ansible-core==2.15
+    #           ansible_runner:
+    #             package_pip: ansible-runner
+    #           system:
+    #             - python-requests
+    #             - python-pyyaml
+    #           python:
+    #             - pytz  # for schedule_rrule lookup plugin
+    #             - python-dateutil>=2.7.0  # schedule_rrule
+    #             - awxkit  # For import and export modules
+    #           galaxy:
+    #             collections:
+    #               - name: awx.awx
+    #                 version: 22.4.0
+    #               - infra.controller_configuration
+    #               - ansible.controller
+    #               - infra.ah_configuration
+    #         build_steps:
+    #           prepend_final:
+    #             - RUN whoami
+    #             - RUN cat /etc/os-release
+    #           append_final:
+    #             - RUN echo This is a post-install command!
 
     - name: Cleanup temporary build directory
       when: r_tmp_dir.path is defined
