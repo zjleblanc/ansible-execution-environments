@@ -17,8 +17,6 @@ pipelines:
                   - sed -i "s/rh_ah_token/$AH_TOKEN/1" ansible.cfg
                   - cd $BITBUCKET_CLONE_DIR/$EE_FOLDER
                   - ls -al
-                  - ansible-builder build \
-                    --tag=quay.io/zleblanc/$EE_FOLDER:latest \
-                    --tag=quay.io/zleblanc/$EE_FOLDER:$BITBUCKET_COMMIT
+                  - ansible-builder build --tag=quay.io/zleblanc/$EE_FOLDER:latest --tag=quay.io/zleblanc/$EE_FOLDER:$BITBUCKET_COMMIT
                   - podman push quay.io/zleblanc/$EE_FOLDER:$BITBUCKET_COMMIT
                   - podman push quay.io/zleblanc/$EE_FOLDER:latest
