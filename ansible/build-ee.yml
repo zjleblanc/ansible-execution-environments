@@ -11,9 +11,12 @@
         state: directory
         suffix: ee_checkout
 
+    - name: test
+      ansible.builtin.command: ls /runner/project
+
     - name: Copy destination to remote
       ansible.builtin.copy:
-        src: "{{ playbook_dir }}/../{{ ee_name }}/"
+        src: "/runner/project/{{ ee_name }}/"
         dest: "{{ r_tmp_dir.path }}/"
         mode: "0644"
 
