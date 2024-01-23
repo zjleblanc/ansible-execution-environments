@@ -1,0 +1,24 @@
+---
+- name: Build an execution environment
+  hosts: "{{ build_host | default(omit) }}"
+  gather_facts: false
+  become: false
+
+  tasks:
+    - name: Create temporary build directory
+      register: r_tmp_dir
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: ee_checkout
+
+    - name: Checkout definitions
+      ansible.builtin.git:
+        repo: git@bitbucket.org:zach-leblanc/ansible-execution-environments.git
+        dest: "{{ r_tmp_dir.path }}"
+        version: "{{ commit_hash }}"
+
+    - name: Cleanup temporary build directory
+      when: r_tmp_dir.path is defined
+      ansible.builtin.file:
+        path: "{{ r_tmp_dir.path }}"
+        state: absent
