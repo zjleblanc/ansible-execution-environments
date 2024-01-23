@@ -1,4 +1,4 @@
-image: quay.io/zleblanc/bitbucket-builder:v2
+image: quay.io/zleblanc/bitbucket-builder:v3
 
 pipelines:
   custom:
