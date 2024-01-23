@@ -15,7 +15,7 @@ pipelines:
                   - podman login quay.io -u "$QUAY_USERNAME" -p "$QUAY_PASSWORD"
                   - podman login registry.redhat.io -u "$RH_USERNAME" -p "$RH_PASSWORD"
                   - sed -i "s/rh_ah_token/$AH_TOKEN/1" ansible.cfg
-                  - cd $BITBUCKET_CLONE_DIR\$EE_FOLDER
+                  - cd $BITBUCKET_CLONE_DIR/$EE_FOLDER
                   - ls -al
                   - ansible-builder build \
                     --tag=quay.io/zleblanc/$EE_FOLDER:latest \
