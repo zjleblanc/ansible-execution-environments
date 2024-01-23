@@ -16,6 +16,8 @@
         repo: git@bitbucket.org:zach-leblanc/ansible-execution-environments.git
         dest: "{{ r_tmp_dir.path }}"
         version: "{{ commit_hash }}"
+        accept_hostkey: true
+        key_file: /home/zach/.ssh/id_rsa
 
     - name: Cleanup temporary build directory
       when: r_tmp_dir.path is defined
