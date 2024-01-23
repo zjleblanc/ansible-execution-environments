@@ -1,15 +1,6 @@
 image: quay.io/zleblanc/bitbucket-builder:v2
 
 pipelines:
-  default:
-    - stage:
-        name: No-op default deployment
-        deployment: test
-        steps:
-          - step:
-              name: 'No-op pipeline'
-              script:
-                - echo 'No-op'
   custom:
     build-ee:
       - variables:
