@@ -1,4 +1,4 @@
-image: quay.io/zleblanc/bitbucket-builder:v5
+image: ubuntu:22.04
 
 pipelines:
   custom:
@@ -12,6 +12,7 @@ pipelines:
             - step:
                 name: Build the execution environment
                 script:
+                  - pip install -r $BITBUCKET_CLONE_DIR/requirements.workflow.txt
                   - podman login quay.io -u "$QUAY_USERNAME" -p "$QUAY_PASSWORD"
                   - podman login registry.redhat.io -u "$RH_USERNAME" -p "$RH_PASSWORD"
                   - sed -i "s/rh_ah_token/$AH_TOKEN/1" ansible.cfg
