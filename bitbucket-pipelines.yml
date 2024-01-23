@@ -2,32 +2,37 @@ image: quay.io/zleblanc/bitbucket-builder:v2
 
 pipelines:
   default:
-    - step:
-        name: 'No-op pipeline'
+    - stage:
+        name: No-op default deployment
         deployment: test
-        script:
-          - echo 'No-op'
+        steps:
+          - step:
+              name: 'No-op pipeline'
+              deployment: test
+              script:
+                - echo 'No-op'
   custom:
     build-ee:
-      - variables:
+    - stage:
+        name: Execution Environment Build
+        deployment: master
+        variables:
           - name: EE_FOLDER
-      - step:
-          name: Login to registries
-          deployment: master
-          script:
-            - podman login quay.io -u $QUAY_USERNAME -p $QUAY_PASSWORD
-            - podman login registry.redhat.io -u $RH_USERNAME -p $RH_PASSWORD
-      - step:
-          name: Replace Automation Hub token in ansible.cfg
-          deployment: master
-          script:
-            - sed -i "s/rh_ah_token/$AH_TOKEN/1" ansible.cfg
-      - step:
-          name: Build the execution environment
-          deployment: master
-          script:
-            - echo $BITBUCKET_CLONE_DIR
-            - echo $BITBUCKET_WORKSPACE
-            - echo $BITBUCKET_COMMIT
-            - cd $BITBUCKET_CLONE_DIR
-            - ls -al
+        steps:
+          - step:
+              name: Login to registries
+              script:
+                - podman login quay.io -u $QUAY_USERNAME -p $QUAY_PASSWORD
+                - podman login registry.redhat.io -u $RH_USERNAME -p $RH_PASSWORD
+          - step:
+              name: Replace Automation Hub token in ansible.cfg
+              script:
+                - sed -i "s/rh_ah_token/$AH_TOKEN/1" ansible.cfg
+          - step:
+              name: Build the execution environment
+              script:
+                - echo $BITBUCKET_CLONE_DIR
+                - echo $BITBUCKET_WORKSPACE
+                - echo $BITBUCKET_COMMIT
+                - cd $BITBUCKET_CLONE_DIR
+                - ls -al
