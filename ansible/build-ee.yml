@@ -60,12 +60,17 @@
             build_files: "{{ ee_definition.build_files | default({}) }}"
 
     - name: "Tag as latest | {{ ee_name }}"
+      containers.podman.podman_tag:
+        image: "{{ ee_name }}{{ commit_hash | ternary(':' + commit_hash, omit) }}"
+        target_names:
+          - "{{ ee_name }}:latest"
+
+    - name: "Push latest tag | {{ ee_name }}"
       containers.podman.podman_image:
-        name: "{{ ee_name }}{{ commit_hash | ternary(':' + commit_hash, omit) }}"
+        name: "{{ ee_name }}:latest"
         pull: false
         push: true
         username: "{{ ee_dest_reg_user | default(omit, true) }}"
         password: "{{ ee_dest_reg_password | default(omit, true) }}"
-        tag: "latest"
         push_args:
           dest: "{{ ee_dest_reg }}"
