@@ -3,29 +3,46 @@ import requests
 import jmespath
 
 BITBUCKET_API_BASE_URL = 'https://api.bitbucket.org/2.0/repositories'
-JSON_QUERY = 'values[].old.path'
+API_HEADERS = {"Content-Type": "application/json"}
+JSON_QUERY = 'values[].new.path'
 
-def filter_ee(path):
+def filter_ee(path: str) -> bool:
   folder = path.split('/')[0]
   return folder.startswith('ee') or folder.startswith('de')
 
-def map_ee(path):
+def map_ee(path: str) -> str:
   return path.split('/')[0]
 
-def process_changes(config) -> set:
+def process_changes(config: dict) -> set:
   url = f"{BITBUCKET_API_BASE_URL}/{config['workspace']}/{config['repo']}/diffstat/{config['commit']}"
-  headers = {
-    "Content-Type": "application/json"
-  }
-  resp = requests.get(url, auth=(config['user'], config['app_pw']), headers=headers)
+  resp = requests.get(url, auth=(config['user'], config['app_pw']), headers=API_HEADERS)
   diff = resp.json()
   changed_files = jmespath.search(JSON_QUERY, diff)
   print("FILES CHANGED\n" + "\n".join(changed_files))
   return set(map(map_ee, filter(filter_ee, changed_files)))
 
+def launch_ansible_jobs(ee, config) -> None:
+  body = {
+    "extra_vars": {
+      "ee_name": ee,
+      "commit_hash": config['commit']
+    }
+  }
+  headers = {
+    "Authorization": "Bearer " + config['aap_token'],
+    **API_HEADERS
+  }
+  url = f"{config['aap_host']}/api/v2/job_templates/{config['aap_jt_id']}/launch/"
+  r = requests.post(url=url, data=body,headers=headers)
+  print("Launched Ansible Job to build " + ee)
+  print("View job -> " + config['aap_host'] + r.json().get('url', 'oops'))
+
 def run(config):
   changed_ees = process_changes(config)
-  print("EXECUTION ENVIRONMENTS CHANGED\n" + "\n".join(changed_ees))
+  for ee in changed_ees:
+    launch_ansible_jobs(ee, config)
+  if not len(changed_ees):
+    print("No execution environment definitions require a new build, exiting...")
 
 if __name__ == "__main__":
   config = {
