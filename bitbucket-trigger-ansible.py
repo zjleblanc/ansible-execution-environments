@@ -33,9 +33,9 @@ def launch_ansible_jobs(ee, config) -> None:
     **API_HEADERS
   }
   url = f"{config['aap_host']}/api/v2/job_templates/{config['aap_jt_id']}/launch/"
-  r = requests.post(url=url, data=body,headers=headers)
+  r = requests.post(url=url, json=body,headers=headers)
   print("Launched Ansible Job to build " + ee)
-  print("View job -> " + config['aap_host'] + r.json().get('url', 'oops'))
+  print("View job -> " + config['aap_host'] + '#/jobs/playbook/' + r.json().get('job', 'oops'))
 
 def run(config):
   changed_ees = process_changes(config)
