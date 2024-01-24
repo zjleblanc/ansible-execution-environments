@@ -80,19 +80,32 @@
           ansible.builtin.file:
             name: "{{ artifacts_dir }}/{{ ee_name }}"
             state: directory
-            mode: "644"
+            mode: "755"
 
-        - name: Publish image to artifacts server
-          become: true
+        - name: Sync image to artifacts server
           delegate_to: "{{ artifacts_host }}"
           ansible.posix.synchronize:
             src: "{{ r_tmp_dir.path }}/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
-            dest: "{{ artifacts_dir }}/{{ ee_name }}/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
+            dest: "/tmp/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
             mode: pull
+
+        - name: Publish artifact # noqa risky-file-permissions
+          become: true
+          delegate_to: "{{ artifacts_host }}"
+          ansible.builtin.copy:
+            src: "/tmp/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
+            dest: "{{ artifacts_dir }}/{{ ee_name }}/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
+            remote_src: true
 
       always:
         - name: Cleanup temporary build directory
           when: r_tmp_dir.path is defined
           ansible.builtin.file:
             path: "{{ r_tmp_dir.path }}"
+            state: absent
+
+        - name: Cleanup temporary artifact
+          delegate_to: "{{ artifacts_host }}"
+          ansible.builtin.file:
+            path: "/tmp/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
             state: absent
