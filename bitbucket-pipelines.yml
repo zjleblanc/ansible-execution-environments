@@ -5,7 +5,7 @@ pipelines:
     - step: 
         name:
         script:
-          - python -m pip install jmespath
+          - python -m pip install -r bitbucket-requirements.txt
           - python bitbucket-trigger-ansible.py
   # custom:
   #   build-ee:
