@@ -5,7 +5,7 @@
   become: false
 
   tasks:
-    - name: Load EE definition from source control
+    - name: Build the execution environment from a version controlled definition
       block:
         - name: Create temporary build directory
           register: r_tmp_dir
@@ -29,48 +29,70 @@
         - name: Create var from ee definition
           ansible.builtin.set_fact:
             ee_definition: "{{ r_ee_def_yml.content | b64decode | from_yaml }}"
+
+        # Begin building the EE
+        - name: Build and publish the EE
+          ansible.builtin.include_role:
+            name: infra.ee_utilities.ee_builder
+          vars: # noqa var-naming[no-role-prefix]
+            ee_base_registry_username: "{{ ee_base_reg_user }}"
+            ee_base_registry_password: "{{ ee_base_reg_password }}"
+            ee_registry_dest: "{{ ee_dest_reg }}"
+            ee_registry_username: "{{ ee_dest_reg_user }}"
+            ee_registry_password: "{{ ee_dest_reg_password }}"
+            ee_ah_host: "{{ lookup('env', 'AH_HOST') | default(omit) }}"
+            ee_ah_token: "{{ lookup('env', 'AH_TOKEN') | default(omit) }}"
+            ee_builder_dir_clean: true
+            ee_list:
+              - name: "{{ ee_name }}"
+                tag: "{{ commit_hash | ternary(commit_hash, omit) }}"
+                images: "{{ ee_definition.images | default({}) }}"
+                dependencies: "{{ ee_definition.dependencies | default({}) }}"
+                options: "{{ ee_definition.options | default({}) }}"
+                build_steps: "{{ ee_definition.build_steps | default({}) }}"
+                build_items: "{{ ee_definition.build_items | default([]) }}"
+                build_files: "{{ ee_definition.build_files | default({}) }}"
+
+        - name: "Tag as latest | {{ ee_name }}"
+          containers.podman.podman_tag:
+            image: "{{ ee_name }}{{ commit_hash | ternary(':' + commit_hash, omit) }}"
+            target_names:
+              - "{{ ee_name }}:latest"
+
+        - name: "Push latest tag | {{ ee_name }}"
+          containers.podman.podman_image:
+            name: "{{ ee_name }}:latest"
+            pull: false
+            push: true
+            username: "{{ ee_dest_reg_user | default(omit, true) }}"
+            password: "{{ ee_dest_reg_password | default(omit, true) }}"
+            push_args:
+              dest: "{{ ee_dest_reg }}"
+
+        - name: "Save image tarball | {{ ee_name }}"
+          containers.podman.podman_save:
+            image: "{{ ee_name }}{{ commit_hash | ternary(':' + commit_hash, omit) }}"
+            dest: "{{ r_tmp_dir.path }}/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
+
+        - name: Create artifacts directory for execution environment
+          become: true
+          delegate_to: "{{ artifacts_host }}"
+          ansible.builtin.file:
+            name: "{{ artifacts_dir }}/{{ ee_name }}"
+            state: directory
+            mode: "644"
+
+        - name: Publish image to artifacts server
+          become: true
+          delegate_to: "{{ artifacts_host }}"
+          ansible.posix.synchronize:
+            src: "{{ r_tmp_dir.path }}/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
+            dest: "{{ artifacts_dir }}/{{ ee_name }}/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
+            mode: pull
+
       always:
         - name: Cleanup temporary build directory
           when: r_tmp_dir.path is defined
           ansible.builtin.file:
             path: "{{ r_tmp_dir.path }}"
             state: absent
-
-    # Begin building the EE
-    - name: Build and publish the EE
-      ansible.builtin.include_role:
-        name: infra.ee_utilities.ee_builder
-      vars: # noqa var-naming[no-role-prefix]
-        ee_base_registry_username: "{{ ee_base_reg_user }}"
-        ee_base_registry_password: "{{ ee_base_reg_password }}"
-        ee_registry_dest: "{{ ee_dest_reg }}"
-        ee_registry_username: "{{ ee_dest_reg_user }}"
-        ee_registry_password: "{{ ee_dest_reg_password }}"
-        ee_ah_host: "{{ lookup('env', 'AH_HOST') | default(omit) }}"
-        ee_ah_token: "{{ lookup('env', 'AH_TOKEN') | default(omit) }}"
-        ee_builder_dir_clean: true
-        ee_list:
-          - name: "{{ ee_name }}"
-            tag: "{{ commit_hash | ternary(commit_hash, omit) }}"
-            images: "{{ ee_definition.images | default({}) }}"
-            dependencies: "{{ ee_definition.dependencies | default({}) }}"
-            options: "{{ ee_definition.options | default({}) }}"
-            build_steps: "{{ ee_definition.build_steps | default({}) }}"
-            build_items: "{{ ee_definition.build_items | default([]) }}"
-            build_files: "{{ ee_definition.build_files | default({}) }}"
-
-    - name: "Tag as latest | {{ ee_name }}"
-      containers.podman.podman_tag:
-        image: "{{ ee_name }}{{ commit_hash | ternary(':' + commit_hash, omit) }}"
-        target_names:
-          - "{{ ee_name }}:latest"
-
-    - name: "Push latest tag | {{ ee_name }}"
-      containers.podman.podman_image:
-        name: "{{ ee_name }}:latest"
-        pull: false
-        push: true
-        username: "{{ ee_dest_reg_user | default(omit, true) }}"
-        password: "{{ ee_dest_reg_password | default(omit, true) }}"
-        push_args:
-          dest: "{{ ee_dest_reg }}"
