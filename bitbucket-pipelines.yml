@@ -2,13 +2,11 @@ image: python
 
 pipelines:
   default:
-    deployment: master
-    steps:
-      - step: 
-          name:
-          script:
-            - python -m pip install jmespath
-            - python bitbucket-trigger-ansible.py
+    - step: 
+        name:
+        script:
+          - python -m pip install jmespath
+          - python bitbucket-trigger-ansible.py
   # custom:
   #   build-ee:
   #     - variables:
