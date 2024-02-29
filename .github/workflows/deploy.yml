@@ -70,6 +70,7 @@ jobs:
         run: |
           sed -i "s/rh_ah_token/$AH_TOKEN/1" ansible.cfg
           sed -i "s/pah_token/$PAH_TOKEN/1" ansible.cfg
+          cp ansible.cfg ${{ inputs.EE_FOLDER_NAME }}/ansible.cfg
         env:
           AH_TOKEN: ${{ secrets.AH_TOKEN }}
           PAH_TOKEN: ${{ secrets.PAH_TOKEN }}
