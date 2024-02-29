@@ -13,7 +13,7 @@ dependencies:
   galaxy:
     collections:
       - name: ansible.controller
-        version: "4.5.0"
+        version: "4.5.1"
       - name: ansible.windows
         version: "1.14.0"
       - name: community.windows
@@ -24,3 +24,11 @@ dependencies:
         version: "3.0.0"
       - name: infoblox.nios_modules
         version: "1.6.1"
+
+additional_build_files:
+  - src: files
+    dest: configs
+
+additional_build_steps:
+  prepend_galaxy:
+    - COPY _build/configs/ansible.cfg /etc/ansible/ansible.cfg
