@@ -11,9 +11,12 @@ dependencies:
         version: "4.4.2"
       - name: ansible.windows
         version: "1.14.0"
-      - community.windows
-      - community.vmware
-      - vmware.vmware_rest
+      - name: community.windows
+        version: "2.1.0"
+      - name: community.vmware
+        version: "4.2.0"
+      - name: vmware.vmware_rest
+        version: "3.0.0"
 
 images:
   base_image:
