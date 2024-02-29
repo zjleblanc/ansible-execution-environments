@@ -8,7 +8,7 @@ dependencies:
   galaxy:
     collections:
       - name: ansible.controller
-        version: "4.4.2"
+        version: "4.5.1"
       - name: ansible.windows
         version: "1.14.0"
       - name: community.windows
