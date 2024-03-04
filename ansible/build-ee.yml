@@ -64,8 +64,8 @@
                 images: "{{ ee_definition.images | default({}) }}"
                 dependencies: "{{ ee_definition.dependencies | default({}) }}"
                 options: "{{ ee_definition.options | default({}) }}"
-                build_steps: "{{ ee_definition.build_steps | default({}) }}"
-                build_items: "{{ ee_definition.build_items | default([]) }}"
+                build_steps: "{{ ee_definition.additional_build_steps | default({}) }}"
+                build_items: "{{ ee_definition.additional_build_items | default([]) }}"
                 build_files: "{{ ee_definition.additional_build_files | default({}) }}"
 
         - name: "Tag as latest | {{ ee_name }}"
