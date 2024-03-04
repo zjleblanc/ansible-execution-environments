@@ -26,6 +26,19 @@
           ansible.builtin.slurp:
             src: "{{ r_tmp_dir.path + '/' + ee_name + '/execution-environment.yml' }}"
 
+        - name: Check if ansible.cfg is include
+          register: r_custom_cfg
+          ansible.builtin.stat:
+            path: "{{ r_tmp_dir.path + '/' + ee_name + '/files/ansible.cfg' }}"
+
+        - name: Inject hub token
+          when: r_custom_cfg.stat.exists | default(false)
+          ansible.builtin.lineinfile:
+            path: "{{ r_tmp_dir.path + '/' + ee_name + '/files/ansible.cfg' }}"
+            regexp: '^token=rh_ah_token'
+            # Token injected from custom credential type
+            line: "token={{ generic_token }}"
+
         - name: Create var from ee definition
           ansible.builtin.set_fact:
             ee_definition: "{{ r_ee_def_yml.content | b64decode | from_yaml }}"
@@ -35,14 +48,16 @@
           ansible.builtin.include_role:
             name: infra.ee_utilities.ee_builder
           vars: # noqa var-naming[no-role-prefix]
+            ee_builder_dir: "{{ r_tmp_dir.path + '/' + ee_name }}"
             ee_base_registry_username: "{{ ee_base_reg_user }}"
             ee_base_registry_password: "{{ ee_base_reg_password }}"
             ee_registry_dest: "{{ ee_dest_reg }}"
             ee_registry_username: "{{ ee_dest_reg_user }}"
             ee_registry_password: "{{ ee_dest_reg_password }}"
-            ee_ah_host: "{{ lookup('env', 'AH_HOST') | default(omit) }}"
-            ee_ah_token: "{{ lookup('env', 'AH_TOKEN') | default(omit) }}"
-            ee_builder_dir_clean: true
+            # pull from Red Hat for demo purposes
+            ee_pull_collections_from_hub: false
+            # ee_ah_host: "{{ lookup('env', 'AH_HOST') | default(omit) }}"
+            # ee_ah_token: "{{ lookup('env', 'AH_TOKEN') | default(omit) }}"
             ee_list:
               - name: "{{ ee_name }}"
                 tag: "{{ commit_hash | ternary(commit_hash, omit) }}"
@@ -51,7 +66,7 @@
                 options: "{{ ee_definition.options | default({}) }}"
                 build_steps: "{{ ee_definition.build_steps | default({}) }}"
                 build_items: "{{ ee_definition.build_items | default([]) }}"
-                build_files: "{{ ee_definition.build_files | default({}) }}"
+                build_files: "{{ ee_definition.additional_build_files | default({}) }}"
 
         - name: "Tag as latest | {{ ee_name }}"
           containers.podman.podman_tag:
