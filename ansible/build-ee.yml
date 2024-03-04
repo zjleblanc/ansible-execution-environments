@@ -115,12 +115,14 @@
       always:
         - name: Cleanup temporary build directory
           when: r_tmp_dir.path is defined
+          tags: cleanup
           ansible.builtin.file:
             path: "{{ r_tmp_dir.path }}"
             state: absent
 
         - name: Cleanup temporary artifact
           delegate_to: "{{ artifacts_host }}"
+          tags: cleanup
           ansible.builtin.file:
             path: "/tmp/{{ ee_name }}-{{ commit_hash | default('nohash') }}.tar.gz"
             state: absent
