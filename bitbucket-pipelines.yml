@@ -1,9 +1,21 @@
 image: python
 
+### Automated Trigger ###
+
+# pipelines:
+#   default:
+#     - step: 
+#         name:
+#         script:
+#           - python -m pip install -r bitbucket-requirements.txt
+#           - python bitbucket-trigger-ansible.py
+
+### Manual Trigger ###
 pipelines:
-  default:
-    - step: 
-        name:
-        script:
-          - python -m pip install -r bitbucket-requirements.txt
-          - python bitbucket-trigger-ansible.py
+  custom:
+    build_ees:
+      - step: 
+          name:
+          script:
+            - python -m pip install -r bitbucket-requirements.txt
+            - python bitbucket-trigger-ansible.py
