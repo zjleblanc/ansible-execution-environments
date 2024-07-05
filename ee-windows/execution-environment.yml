@@ -14,7 +14,7 @@ dependencies:
       - name: ansible.utils
         version: 5.0.0
       - name: community.aws
-        version: 8.0.0
+        version: 6.3.0
       - name: community.windows
         version: 2.2.0
       - name: community.general
