@@ -6,18 +6,22 @@ version: 3
 dependencies:
   galaxy:
     collections:
+      - name: amazon.aws
+        version: 8.1.0
       - name: ansible.windows
-        version: 1.9.0
+        version: 2.4.0
       - name: ansible.utils
-        version: 2.9.0
+        version: 5.0.0
+      - name: community.aws
+        version: 8.0.0
       - name: community.windows
-        version: 1.9.0
+        version: 2.2.0
       - name: community.general
-        version: 6.6.0
+        version: 9.1.0
       - name: chocolatey.chocolatey
-        version: 1.4.0
+        version: 1.5.1
       - name: servicenow.itsm
-        version: 2.1.0
+        version: 2.6.1
   python:
     - paramiko
     - pyOpenSSL
@@ -26,6 +30,8 @@ dependencies:
     - pexpect>=4.5
     - pyyaml
     - proxmoxer
+    - jc
+    - jmespath
   system:
     - krb5-libs [platform:rpm]
     - krb5-workstation [platform:rpm]
