@@ -6,12 +6,6 @@ Execution Environment with Windows modules and kerberos enabled
 <br>
 [🐳 Dockerfile](./.files/Dockerfile)
 
-## dependencies
-
-[🐍 Python](./requirements.txt)<br>
-[🌌 Galaxy](./requirements.yml)<br>
-[💻 System](./bindep.txt)
-
 ## additional build steps
 
 Define additional build steps for injecting krb5 conf and enabling encryption support for Active Directory
