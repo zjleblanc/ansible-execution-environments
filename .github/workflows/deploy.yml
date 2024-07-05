@@ -44,7 +44,9 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Install python requirements (ansible-builder)
-        run: pip install -r requirements.workflow.txt
+        run: |
+          pip install -U ansible
+          pip install -r requirements.workflow.txt
 
       - name: Prep config directory
         run: mkdir -p /home/runner/.docker
@@ -78,6 +80,7 @@ jobs:
         id: build-image
         working-directory: ${{ inputs.EE_FOLDER_NAME }}
         run: |
+          ansible --version
           ansible-builder build \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ inputs.EE_IMAGE_TAG }} \
           --tag=${{ inputs.EE_FOLDER_NAME }}:${{ github.sha }}
