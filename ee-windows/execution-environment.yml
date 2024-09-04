@@ -20,6 +20,8 @@ dependencies:
         version: 9.1.0
       - name: chocolatey.chocolatey
         version: 1.5.1
+      - name: microsoft.ad
+        version: 1.6.0
       - name: servicenow.itsm
         version: 2.6.1
   python:
